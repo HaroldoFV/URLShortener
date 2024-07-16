@@ -1,0 +1,30 @@
+services:
+  api1:
+    build: .
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on:
+      - redis
+
+  api2:
+    build: .
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api1
+      - api2
+
+volumes:
+  redis_data:

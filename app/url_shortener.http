@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:80/api/v1/shortlink
+@contentType = application/json
+
+### Encurtar URL
+POST {{baseUrl}}
+Content-Type: {{contentType}}
+
+{
+    "destination": "http://www.google.com"
+}
+
+### Post with invalid slug
+POST {{baseUrl}}
+Content-Type: {{contentType}}
+
+{
+  "destination": "http://www.google.com",
+  "slug": "invalid!slug"
+}
+
+### Redirecionar URL curta
+GET http://localhost/s/B2d2qi7

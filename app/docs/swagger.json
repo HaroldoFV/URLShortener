@@ -1,0 +1,117 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Este é um serviço de encurtamento de URLs.",
+        "title": "Encurtador de URLs API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/shortlink": {
+            "post": {
+                "description": "Cria uma URL curta a partir de uma URL longa",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Encurtar URL",
+                "parameters": [
+                    {
+                        "description": "URL para encurtar",
+                        "name": "url",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.ShortenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.ShortenResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/s/{slug}": {
+            "get": {
+                "description": "Redireciona para a URL longa correspondente à URL curta ou exibe informações para documentação",
+                "produces": [
+                    "text/html",
+                    "application/json"
+                ],
+                "summary": "Redirecionar para URL longa",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Set to true to get JSON documentation response",
+                        "name": "doc",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JSON response for documentation",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "302": {
+                        "description": "Redirecionamento para URL longa",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Shortlink not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ShortenRequest": {
+            "type": "object",
+            "properties": {
+                "destination": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.ShortenResponse": {
+            "type": "object",
+            "properties": {
+                "destination": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

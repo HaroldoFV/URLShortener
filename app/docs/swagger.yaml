@@ -1,0 +1,78 @@
+basePath: /
+definitions:
+  main.ShortenRequest:
+    properties:
+      destination:
+        type: string
+      slug:
+        type: string
+    type: object
+  main.ShortenResponse:
+    properties:
+      destination:
+        type: string
+      slug:
+        type: string
+    type: object
+host: localhost
+info:
+  contact: {}
+  description: Este é um serviço de encurtamento de URLs.
+  title: Encurtador de URLs API
+  version: "1.0"
+paths:
+  /api/v1/shortlink:
+    post:
+      consumes:
+      - application/json
+      description: Cria uma URL curta a partir de uma URL longa
+      parameters:
+      - description: URL para encurtar
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/main.ShortenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ShortenResponse'
+      summary: Encurtar URL
+  /s/{slug}:
+    get:
+      description: Redireciona para a URL longa correspondente à URL curta ou exibe
+        informações para documentação
+      parameters:
+      - description: slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      - default: true
+        description: Set to true to get JSON documentation response
+        in: query
+        name: doc
+        type: boolean
+      produces:
+      - text/html
+      - application/json
+      responses:
+        "200":
+          description: JSON response for documentation
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "302":
+          description: Redirecionamento para URL longa
+          schema:
+            type: string
+        "404":
+          description: Shortlink not found
+          schema:
+            type: string
+      summary: Redirecionar para URL longa
+swagger: "2.0"
